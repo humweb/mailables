@@ -123,6 +123,14 @@ func (suite *MailableTestSuite) TestContentMarkdown() {
 	suite.Equal(template.HTML("<b>Bolded</b>"), content2.ToHTML())
 }
 
+func (suite *MailableTestSuite) TestDefaultTemplate() {
+	tmpl := ThemeDefault{}
+
+	suite.IsType("string", tmpl.Html())
+	suite.IsType("string", tmpl.Text())
+	suite.Equal("default", tmpl.Name())
+}
+
 // In order for 'go test' to run this suite, we need to create
 // a normal test function and pass our suite to suite.Run
 func TestMailableTestSuite(t *testing.T) {
