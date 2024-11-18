@@ -387,7 +387,7 @@ func (t *ThemeDefault) Html() string {
                   {{ end }}
 
                   {{ with .Body.Intro }}
-                  {{ .Content }}
+                  {{ .ToHTML }}
                   {{ end }}
 
                   {{ with .Body.Actions }}
@@ -476,7 +476,7 @@ func (t *ThemeDefault) Html() string {
                   {{ end }}
                   {{ end }}
                   {{ with .Body.Outro }}
-                  <p>{{ .Content }}</p>
+                  <p>{{ .ToHTML }}</p>
                   {{ end }}
                   <p>
                     {{ .Body.Signature }},
