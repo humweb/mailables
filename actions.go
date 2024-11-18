@@ -13,8 +13,7 @@ func NewAction(button Button, instructions string) Action {
 
 // Button defines a action Button
 type Button struct {
-	Color     string
-	TextColor string
-	Text      string
-	Link      string
+	Variant string
+	Text    string
+	Link    string
 }

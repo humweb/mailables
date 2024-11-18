@@ -76,19 +76,19 @@ func (suite *MailableTestSuite) TestBodySetters() {
 func (suite *MailableTestSuite) TestSetTable() {
 	table := NewTable("Test data table",
 		[]TableRow{
-			{"ID": 1, "Title": "foo"},
-			{"ID": 2, "Title": "bar"},
+			{{Key: "ID", Value: "1"}, {Key: "Title", Value: "foo"}},
+			{{Key: "ID", Value: "2"}, {Key: "Title", Value: "bar"}},
 		})
 	suite.Body.AddTables(table)
 
 	suite.Equal(suite.Body.Tables[0].Title, "Test data table")
-	suite.Equal(suite.Body.Tables[0].Data[0]["ID"], 1)
-	suite.Equal(suite.Body.Tables[0].Data[0]["Title"], "foo")
+	suite.Equal(suite.Body.Tables[0].Data[0][0].Key, "ID")
+	suite.Equal(suite.Body.Tables[0].Data[0][0].Value, "1")
 }
 
 func (suite *MailableTestSuite) TestSetPanels() {
-	panel1 := NewPanel("Title", NewContent(ContentText, "Body 1"))
-	panel2 := NewPanel("", NewContent(ContentHTML, "Body 2"))
+	panel1 := NewPanel("Title", NewContent(ContentText, "Body 1"), "50%")
+	panel2 := NewPanel("", NewContent(ContentHTML, "Body 2"), "50%")
 	suite.Body.AddPanels(panel1, panel2)
 
 	suite.Equal(suite.Body.Panels[0].Title, "Title")

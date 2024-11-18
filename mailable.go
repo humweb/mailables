@@ -25,6 +25,7 @@ var templateFuncs = template.FuncMap{
 }
 
 func (m *Mailable) ToHTML(body *Body) (string, error) {
+
 	var err error
 	// Parse and cache template
 	//if m.CachedTemplate == nil {

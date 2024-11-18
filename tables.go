@@ -10,5 +10,10 @@ func NewTable(title string, data []TableRow) Table {
 	return Table{Title: title, Data: data}
 }
 
+type TableColumn struct {
+	Key   string
+	Value string
+}
+
 // TableRow structure for generating a table row
-type TableRow map[string]any
+type TableRow []TableColumn

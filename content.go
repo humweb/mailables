@@ -33,8 +33,13 @@ func NewContent(format ContentFormat, content string) *Content {
 type Panel struct {
 	Title string
 	Body  *Content
+	Width string
 }
 
-func NewPanel(title string, body *Content) Panel {
-	return Panel{Title: title, Body: body}
+func NewPanel(title string, body *Content, width string) Panel {
+	return Panel{
+		Title: title,
+		Body:  body,
+		Width: width,
+	}
 }
