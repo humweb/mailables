@@ -1,0 +1,20 @@
+package mailables
+
+// Action
+type Action struct {
+	Instructions string
+	Button       Button
+}
+
+// NewAction
+func NewAction(button Button, instructions string) Action {
+	return Action{Instructions: instructions, Button: button}
+}
+
+// Button defines a action Button
+type Button struct {
+	Color     string
+	TextColor string
+	Text      string
+	Link      string
+}
