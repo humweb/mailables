@@ -161,6 +161,7 @@
       margin: 0 auto;
       padding: 0;
       width: 95%;
+      border-radius: 10px;
     }
 
     /* Subcopy */
@@ -200,28 +201,36 @@
 
     /* Tables */
 
-    .table table {
-      -premailer-cellpadding: 0;
-      -premailer-cellspacing: 0;
-      -premailer-width: 100%;
-      margin: 30px auto;
-      width: 100%;
+    .table {
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.9em;
+      font-family: sans-serif;
+      min-width: 400px;
     }
-
-    .table th {
-      border-bottom: 1px solid #edeff2;
-      margin: 0;
+    .table thead tr {
+      background-color: #6b7787;
+      color: #ffffff;
       text-align: left;
-      font-size: 14px;
-      padding-bottom: 8px;
+    }
+    .table th,
+    .table td {
+      padding: 12px 15px;
+    }
+    .table tbody tr {
+
     }
 
-    .table td {
-      color: #74787e;
-      font-size: 14px;
-      line-height: 18px;
-      margin: 0;
-      padding: 10px 0;
+    .table tbody tr:nth-of-type(even) {
+      background-color: #edf2f7;
+    }
+
+    .table tbody tr:last-of-type {
+      border-bottom: 2px solid #94a3b8;
+    }
+    .table tbody tr.active-row {
+      font-weight: bold;
+      color: #94a3b8;
     }
 
     .content-cell {
@@ -242,7 +251,7 @@
       float: unset;
     }
 
-    .button {
+    .btn {
       -webkit-text-size-adjust: none;
       border-radius: 4px;
       color: #fff;
@@ -251,8 +260,8 @@
       text-decoration: none;
     }
 
-    .button-blue,
-    .button-primary {
+    .btn-blue,
+    .btn-primary {
       background-color: #2d3748;
       border-bottom: 8px solid #2d3748;
       border-left: 18px solid #2d3748;
@@ -260,8 +269,8 @@
       border-top: 8px solid #2d3748;
     }
 
-    .button-green,
-    .button-success {
+    .btn-green,
+    .btn-success {
       background-color: #48bb78;
       border-bottom: 8px solid #48bb78;
       border-left: 18px solid #48bb78;
@@ -269,8 +278,8 @@
       border-top: 8px solid #48bb78;
     }
 
-    .button-red,
-    .button-error {
+    .btn-red,
+    .btn-error {
       background-color: #e53e3e;
       border-bottom: 8px solid #e53e3e;
       border-left: 18px solid #e53e3e;
@@ -292,6 +301,18 @@
       padding: 16px;
       text-align: center;
       border-radius: 7px;
+    }
+    .panel-list-content {
+      background-color: #edf2f7;
+      color: #718096;
+      padding: 0px;
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    .panel-list-item td {
+      padding: 8px 16px;
+      border-bottom: #d1d7dc solid 1px;
     }
 
     .panel-content p {
@@ -324,7 +345,7 @@
     }
 
     @media only screen and (max-width: 500px) {
-      .button {
+      .btn {
         width: 100% !important;
       }
     }
@@ -364,27 +385,45 @@
                   {{ end }}
 
                   {{ with .Body.Intro }}
-                  {{ .Content }}
+                  {{ .ToHTML }}
                   {{ end }}
 
                   {{ with .Body.Actions }}
                   {{ if gt (len . ) 0 }}
                   {{ range $action := . }}
                   {{/*<p>{{ $action.Instructions }}</p>*/}}
-                  <table class="action" width="100%" cellpadding="0" cellspacing="0"
-                         role="presentation">
+                  <table class="action" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
-                      <td>
-                        <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+
+                      <td width="100%" style="text-align: center;">
+                        <a href="{{ $action.Button.Link | url }}" class="btn btn-{{ $action.Button.Variant }}"
+                           target="_blank" rel="noopener">{{ $action.Button.Text }}</a>
+                      </td>
+                    </tr>
+                  </table>
+                  {{end}}
+                  {{end}}
+                  {{end}}
+                  {{/*End Body Actions*/}}
+
+                  <!-- Panels -->
+                  {{with .Body.DataList}}
+                  <br>
+                  <br>
+                  <h2 class="text-2xl">{{ .Title }}</h2>
+                  <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                      <td style="padding: 6px;" width="100%">
+                        <table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
-                            <td>
-                              <table border="0" cellpadding="0" cellspacing="0" role="presentation">
-                                <tr>
-                                  <td>
-                                    <a href="{{ $action.Button.Link | url }}" class="button button-primary"
-                                       target="_blank" rel="noopener">{{ $action.Button.Text }}</a>
-                                  </td>
+                            <td class="panel-list-content">
+                              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                {{ range $item := .Data }}
+                                <tr class="panel-list-item">
+                                  <td>{{$item.Key}}</td>
+                                  <td>{{$item.Value}}</td>
                                 </tr>
+                                {{end}}
                               </table>
                             </td>
                           </tr>
@@ -393,9 +432,6 @@
                     </tr>
                   </table>
                   {{end}}
-                  {{end}}
-                  {{end}}
-                  {{/*End Body Actions*/}}
 
                   <!-- Panels -->
                   {{with .Body.Panels}}
@@ -430,8 +466,8 @@
                   {{ if gt (len $data) 0 }}
                   <br>
                   <br>
-                  <h2>{{ $table.Title }}</h2>
-                  <br>
+                  <h2 class="text-2xl">{{ $table.Title }}</h2>
+
                   <table class="data-wrapper" width="100%" cellpadding="0" cellspacing="0">
                     <tr>
                       <td colspan="2">
@@ -439,9 +475,9 @@
                           <thead>
                           <tr>
                             {{ $col := index $data 0 }}
-                            {{ range $key, $entry := $col }}
+                            {{ range $entry := $col }}
                             <th>
-                              {{ $key }}
+                              {{ $entry.Key }}
                             </th>
                             {{ end }}
                           </tr>
@@ -451,7 +487,7 @@
                           <tr>
                             {{ range $cell := $row }}
                             <td>
-                              {{ $cell }}
+                              {{ $cell.Value }}
                             </td>
                             {{ end }}
                           </tr>
@@ -465,7 +501,7 @@
                   {{ end }}
                   {{ end }}
                   {{ with .Body.Outro }}
-                  <p>{{ .Content }}</p>
+                  <p>{{ .ToHTML }}</p>
                   {{ end }}
                   <p>
                     {{ .Body.Signature }},

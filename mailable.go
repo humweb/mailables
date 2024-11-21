@@ -29,6 +29,10 @@ func (m *Mailable) ToHTML(body *Body) (string, error) {
 	var err error
 	// Parse and cache template
 	//if m.CachedTemplate == nil {
+	if m.Theme == nil {
+		m.Theme = &ThemeDefault{}
+	}
+
 	m.CachedTemplate, err = template.New("mailable").Funcs(templateFuncs).Parse(m.Theme.Html())
 	if err != nil {
 		return "", err
@@ -112,6 +116,7 @@ type Body struct {
 	Name      string // The name of the contacted person
 	Greeting  string // Greeting for the contacted person (default to 'Hi')
 	Intro     Content
+	DataList  DataList
 	Panels    []Panel
 	Tables    []Table
 	Actions   []Action // Actions are a list of actions that the user will be able to execute via a button click
@@ -163,6 +168,18 @@ func (b *Body) SetOutro(outro string, format ContentFormat) *Body {
 		Format:  format,
 		Content: outro,
 	}
+	return b
+}
+
+// SetDataList set data listing for body
+func (b *Body) SetDataList(data DataList) *Body {
+	b.DataList = data
+	return b
+}
+
+// PushDataList push data list item to data listing
+func (b *Body) PushDataList(data ...DataListItem) *Body {
+	b.DataList.Data = append(b.DataList.Data, data...)
 	return b
 }
 

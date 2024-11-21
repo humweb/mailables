@@ -216,36 +216,36 @@ func (t *ThemeDefault) Html() string {
     /* Tables */
 
     .table {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 400px;
-	}
-	.table thead tr {
-		background-color: #6b7787;
-		color: #ffffff;
-		text-align: left;
-	}
-	.table th,
-	.table td {
-		padding: 12px 15px;
-	}
-	.table tbody tr {
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.9em;
+      font-family: sans-serif;
+      min-width: 400px;
+    }
+    .table thead tr {
+      background-color: #6b7787;
+      color: #ffffff;
+      text-align: left;
+    }
+    .table th,
+    .table td {
+      padding: 12px 15px;
+    }
+    .table tbody tr {
 
-	}
-	
-	.table tbody tr:nth-of-type(even) {
-		background-color: #edf2f7;
-	}
-	
-	.table tbody tr:last-of-type {
-		border-bottom: 2px solid #94a3b8;
-	}
-	.table tbody tr.active-row {
-		font-weight: bold;
-		color: #94a3b8;
-	}
+    }
+
+    .table tbody tr:nth-of-type(even) {
+      background-color: #edf2f7;
+    }
+
+    .table tbody tr:last-of-type {
+      border-bottom: 2px solid #94a3b8;
+    }
+    .table tbody tr.active-row {
+      font-weight: bold;
+      color: #94a3b8;
+    }
 
     .content-cell {
       max-width: 100vw;
@@ -315,6 +315,18 @@ func (t *ThemeDefault) Html() string {
       padding: 16px;
       text-align: center;
       border-radius: 7px;
+    }
+    .panel-list-content {
+      background-color: #edf2f7;
+      color: #718096;
+      padding: 0px;
+      text-align: center;
+      border-radius: 7px;
+    }
+
+    .panel-list-item td {
+      padding: 8px 16px;
+      border-bottom: #d1d7dc solid 1px;
     }
 
     .panel-content p {
@@ -396,17 +408,44 @@ func (t *ThemeDefault) Html() string {
                   {{/*<p>{{ $action.Instructions }}</p>*/}}
                   <table class="action" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
-            
-					  <td width="100%" style="text-align: center;">
-						<a href="{{ $action.Button.Link | url }}" class="btn btn-{{ $action.Button.Variant }}"
-						   target="_blank" rel="noopener">{{ $action.Button.Text }}</a>
-					  </td>
-					</tr>
+
+                      <td width="100%" style="text-align: center;">
+                        <a href="{{ $action.Button.Link | url }}" class="btn btn-{{ $action.Button.Variant }}"
+                           target="_blank" rel="noopener">{{ $action.Button.Text }}</a>
+                      </td>
+                    </tr>
                   </table>
                   {{end}}
                   {{end}}
                   {{end}}
                   {{/*End Body Actions*/}}
+
+                  <!-- Panels -->
+                  {{with .Body.DataList}}
+                  <br>
+                  <br>
+                  <h2 class="text-2xl">{{ .Title }}</h2>
+                  <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                    <tr>
+                      <td style="padding: 6px;" width="100%">
+                        <table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                          <tr>
+                            <td class="panel-list-content">
+                              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                {{ range $item := .Data }}
+                                <tr class="panel-list-item">
+                                  <td>{{$item.Key}}</td>
+                                  <td>{{$item.Value}}</td>
+                                </tr>
+                                {{end}}
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  {{end}}
 
                   <!-- Panels -->
                   {{with .Body.Panels}}

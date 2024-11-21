@@ -73,17 +73,37 @@ func (suite *MailableTestSuite) TestBodySetters() {
 	suite.Equal(suite.Body.Title, "Email body title")
 }
 
-func (suite *MailableTestSuite) TestSetTable() {
+func (suite *MailableTestSuite) TestAddTables() {
 	table := NewTable("Test data table",
 		[]TableRow{
 			{{Key: "ID", Value: "1"}, {Key: "Title", Value: "foo"}},
 			{{Key: "ID", Value: "2"}, {Key: "Title", Value: "bar"}},
 		})
+
 	suite.Body.AddTables(table)
 
 	suite.Equal(suite.Body.Tables[0].Title, "Test data table")
 	suite.Equal(suite.Body.Tables[0].Data[0][0].Key, "ID")
 	suite.Equal(suite.Body.Tables[0].Data[0][0].Value, "1")
+}
+
+func (suite *MailableTestSuite) TestAddDataList() {
+	dataList := NewDataList("Test data list",
+		[]DataListItem{
+			{Key: "ID", Value: "1"},
+			{Key: "Title", Value: "bar"},
+		})
+
+	suite.Body.SetDataList(dataList)
+
+	suite.Equal(suite.Body.DataList.Title, "Test data list")
+	suite.Equal(suite.Body.DataList.Data[0].Key, "ID")
+	suite.Equal(suite.Body.DataList.Data[0].Value, "1")
+
+	suite.Body.PushDataList(DataListItem{Key: "Name", Value: "foo"})
+	suite.Equal(suite.Body.DataList.Data[2].Key, "Name")
+	suite.Equal(suite.Body.DataList.Data[2].Value, "foo")
+
 }
 
 func (suite *MailableTestSuite) TestSetPanels() {
@@ -129,6 +149,12 @@ func (suite *MailableTestSuite) TestDefaultTemplate() {
 	suite.IsType("string", tmpl.Html())
 	suite.IsType("string", tmpl.Text())
 	suite.Equal("default", tmpl.Name())
+}
+
+func (suite *MailableTestSuite) TestToHTML() {
+	str, err := suite.Mailable.ToHTML(suite.Body)
+	suite.Nil(err)
+	suite.IsType("string", str)
 }
 
 // In order for 'go test' to run this suite, we need to create
