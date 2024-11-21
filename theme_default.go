@@ -427,7 +427,7 @@ func (t *ThemeDefault) Html() string {
                   <h2 class="text-2xl">{{ .Title }}</h2>
                   <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
-                      <td style="padding: 6px;" width="100%">
+                      <td width="100%">
                         <table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
                             <td class="panel-list-content">
@@ -452,7 +452,7 @@ func (t *ThemeDefault) Html() string {
                   <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
                       {{ range $panel := . }}
-                      <td style="padding: 6px;" width="{{$panel.Width}}">
+                      <td width="{{$panel.Width}}">
                         <table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
                             <td class="panel-content">
