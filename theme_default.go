@@ -317,10 +317,10 @@ func (t *ThemeDefault) Html() string {
       border-radius: 7px;
     }
     .panel-list-content {
-      background-color: #edf2f7;
+      background-color: #f9fafc;
       color: #718096;
       padding: 0px;
-      text-align: center;
+      text-align: left;
       border-radius: 7px;
     }
 
