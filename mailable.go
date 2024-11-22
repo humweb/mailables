@@ -27,17 +27,11 @@ var templateFuncs = template.FuncMap{
 
 func (m *Mailable) ToHTML(body *Body) (string, error) {
 
-	// Parse and cache template
-	//if m.CachedTemplate == nil {
+	// If Mailable.Template is not set use the default theme
 	if m.Theme == nil {
 		m.Theme = &tmpl.ThemeDefault{}
 	}
 
-	//m.CachedTemplate, err = template.New("mailable").Funcs(templateFuncs).Parse(m.Theme.Html())
-	//if err != nil {
-	//	return "", err
-	//}
-	//}
 	var b bytes.Buffer
 	if err := m.Theme.Html().Execute(&b, &Page{
 		Application: m.App,
@@ -201,7 +195,3 @@ func (b *Body) AddActions(actions ...Action) *Body {
 	b.Actions = append(b.Actions, actions...)
 	return b
 }
-
-//t, err := template.New("hermes").Funcs(sprig.FuncMap()).Funcs(templateFuncs).Funcs(template.FuncMap{
-//"safe": func(s string) template.HTML { return template.HTML(s) }, // Used for keeping comments in generated template
-//}).Parse(tplt)

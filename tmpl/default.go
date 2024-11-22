@@ -1,6 +1,12 @@
 package tmpl
 
-import "html/template"
+import (
+	"embed"
+	"html/template"
+)
+
+//go:embed *.gohtml
+var templates embed.FS
 
 type ThemeDefault struct {
 	parsedTemplates *template.Template
@@ -22,9 +28,9 @@ func (t *ThemeDefault) Text() string {
 
 func (t *ThemeDefault) Html() *template.Template {
 	if t.parsedTemplates == nil {
-		t.parsedTemplates = template.Must(template.New(t.Name()).
+		t.parsedTemplates = template.Must(template.New("index.gohtml").
 			Funcs(templateFuncs).
-			ParseFiles("css.gohtml", "actions.gohtml", "data_list.gohtml", "panels.gohtml", "tables.gohtml", "index.gohtml"))
+			ParseFS(templates, "css.gohtml", "actions.gohtml", "data_list.gohtml", "panels.gohtml", "tables.gohtml", "index.gohtml"))
 	}
 	return t.parsedTemplates
 }
