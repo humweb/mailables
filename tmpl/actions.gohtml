@@ -1,0 +1,17 @@
+{{define "actions"}}
+{{ with .Actions }}
+{{ if gt (len . ) 0 }}
+{{ range $action := . }}
+{{/*<p>{{ $action.Instructions }}</p>*/}}
+<table class="action" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+  <tr>
+    <td width="100%" style="text-align: center;">
+      <a href="{{ $action.Button.Link | url }}" class="btn btn-{{ $action.Button.Variant }}"
+         target="_blank" rel="noopener">{{ $action.Button.Text }}</a>
+    </td>
+  </tr>
+</table>
+{{end}}
+{{end}}
+{{end}}
+{{end}}

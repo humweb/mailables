@@ -2,11 +2,12 @@ package mailables
 
 import (
 	"bytes"
+	"github.com/humweb/mailables/tmpl"
 	"github.com/vanng822/go-premailer/premailer"
 	"html/template"
 )
 
-// Mailable
+// Mailable define main mailable struct
 type Mailable struct {
 	App            *Application
 	Theme          Theme
@@ -26,20 +27,13 @@ var templateFuncs = template.FuncMap{
 
 func (m *Mailable) ToHTML(body *Body) (string, error) {
 
-	var err error
-	// Parse and cache template
-	//if m.CachedTemplate == nil {
+	// If Mailable.Template is not set use the default theme
 	if m.Theme == nil {
-		m.Theme = &ThemeDefault{}
+		m.Theme = &tmpl.ThemeDefault{}
 	}
 
-	m.CachedTemplate, err = template.New("mailable").Funcs(templateFuncs).Parse(m.Theme.Html())
-	if err != nil {
-		return "", err
-	}
-	//}
 	var b bytes.Buffer
-	if err := m.CachedTemplate.Execute(&b, &Page{
+	if err := m.Theme.Html().Execute(&b, &Page{
 		Application: m.App,
 		Body:        body,
 	}); err != nil {
@@ -106,7 +100,7 @@ func NewApplication(name, link, copyright, logo string) *Application {
 // Theme contract for theme expansion
 type Theme interface {
 	Name() string
-	Html() string
+	Html() *template.Template
 	Text() string
 }
 
@@ -201,7 +195,3 @@ func (b *Body) AddActions(actions ...Action) *Body {
 	b.Actions = append(b.Actions, actions...)
 	return b
 }
-
-//t, err := template.New("hermes").Funcs(sprig.FuncMap()).Funcs(templateFuncs).Funcs(template.FuncMap{
-//"safe": func(s string) template.HTML { return template.HTML(s) }, // Used for keeping comments in generated template
-//}).Parse(tplt)

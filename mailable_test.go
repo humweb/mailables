@@ -2,6 +2,8 @@ package mailables
 
 // Basic imports
 import (
+	"bytes"
+	t "github.com/humweb/mailables/tmpl"
 	"github.com/stretchr/testify/suite"
 	"html/template"
 	"testing"
@@ -51,8 +53,10 @@ func (suite *MailableTestSuite) TestMailableThemeOption() {
 		WithoutCSSInlining(),
 		WithTheme(&themeDef{}),
 	)
+	var b bytes.Buffer
+	_ = mailable.Theme.Html().Execute(&b, &Page{})
 	suite.Equal(mailable.Theme.Name(), "Test Theme")
-	suite.Equal(mailable.Theme.Html(), "<p>Txt</p>")
+	suite.Equal(b.String(), "<p>Txt</p>")
 	suite.Equal(mailable.Theme.Text(), "Txt")
 }
 
@@ -144,14 +148,15 @@ func (suite *MailableTestSuite) TestContentMarkdown() {
 }
 
 func (suite *MailableTestSuite) TestDefaultTemplate() {
-	tmpl := ThemeDefault{}
+	tmpl := t.ThemeDefault{}
 
-	suite.IsType("string", tmpl.Html())
+	suite.IsType(&template.Template{}, tmpl.Html())
 	suite.IsType("string", tmpl.Text())
 	suite.Equal("default", tmpl.Name())
 }
 
 func (suite *MailableTestSuite) TestToHTML() {
+
 	str, err := suite.Mailable.ToHTML(suite.Body)
 	suite.Nil(err)
 	suite.IsType("string", str)
@@ -168,8 +173,8 @@ type themeDef struct{}
 func (t *themeDef) Name() string {
 	return "Test Theme"
 }
-func (t *themeDef) Html() string {
-	return "<p>Txt</p>"
+func (t *themeDef) Html() *template.Template {
+	return template.Must(template.New("def").Parse("<p>Txt</p>"))
 }
 func (t *themeDef) Text() string {
 	return "Txt"
