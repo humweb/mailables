@@ -1,0 +1,26 @@
+{{ define "panels" }}
+{{with .Panels }}
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+  <tr>
+      {{ range $panel := . }}
+    <td width="{{$panel.Width}}">
+      <table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+          <td class="panel-content">
+            <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+              <tr>
+                <td class="panel-item">
+                  <h3>{{$panel.Title}}</h3>
+                  <p>{{$panel.Body.ToHTML}}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+      {{end}}
+  </tr>
+</table>
+{{end}}
+{{end}}

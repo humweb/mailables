@@ -168,7 +168,7 @@ type themeDef struct{}
 func (t *themeDef) Name() string {
 	return "Test Theme"
 }
-func (t *themeDef) Html() string {
+func (t *themeDef) Html() *template.Template {
 	return "<p>Txt</p>"
 }
 func (t *themeDef) Text() string {
